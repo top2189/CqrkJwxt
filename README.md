@@ -13,3 +13,57 @@
 ```sh
 pip install -r requirements.txt
 ```
+
+
+## 使用
+登录教务系统
+```python
+from cqrk.user import user
+from cqrk.jwxt import jwxt
+
+username = '学号'
+password = '密码'
+
+User = user(username,password)
+Jwxt = jwxt(User.loadCookie())
+
+if not User.isCookieEnable():
+    if User.login():
+        print('登录成功')
+
+studentInfo = Jwxt.getStudentInfo()
+print(f"你好，{studentInfo['name']}。")
+```
+
+解析学生课表
+```python
+from tabulate import tabulate
+from cqrk.jwxt import jwxt
+from cqrk.user import user
+
+username = '学号'
+password = '密码'
+
+User = user(username,password)
+Jwxt = jwxt(User.loadCookie())
+
+
+if not User.isCookieEnable():
+    if User.login():
+        print('登录成功')
+
+
+courseSheet = Jwxt.getCourseSheet(parse=True,onlyName=True)
+
+
+# 定义表头
+headers = ['周一', '周二', '周三','周四','周五','周六','周日']
+
+# 使用tabulate生成表格
+table = tabulate([*zip(*courseSheet)], headers=headers, tablefmt='grid')
+
+# 输出表格
+print(table)
+
+
+```
