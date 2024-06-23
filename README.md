@@ -42,10 +42,11 @@ from cqrk.jwxt import jwxt
 from cqrk.user import user
 
 username = '学号'
+password = '密码'
 
-User = user()
+User = user(username,password)
 
-if not User.login(user=username) : exit()
+if not User.login() : exit()
 
 Jwxt = jwxt(User.loadCookie())
 courseSheet = Jwxt.getCourseSheet(parse=True,onlyName=True)
@@ -59,5 +60,6 @@ table = tabulate(data, headers=headers, tablefmt='grid')
 
 # 输出表格
 print(table)
+
 
 ```
